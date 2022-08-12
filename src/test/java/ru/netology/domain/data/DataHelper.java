@@ -32,8 +32,8 @@ public class DataHelper {
     @SneakyThrows
     private static User requestUser() {
         var runner = new QueryRunner();
-        var sqlRequestUser = "SELECT * FROM users WHERE id = ?;";
-        String vasyaId = "891da85c-15ea-4fed-b1aa-cc41490cb18c";
+        var sqlRequestUser = "SELECT * FROM users WHERE login = ?;";
+        String vasyaId = "vasya";
 
         try (var conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/app", "app", "pass")) {
