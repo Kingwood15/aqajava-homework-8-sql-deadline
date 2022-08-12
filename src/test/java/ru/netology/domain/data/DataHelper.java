@@ -45,8 +45,8 @@ public class DataHelper {
     @SneakyThrows
     private static String requestCode(User user) {
         var runner = new QueryRunner();
-        var sqlRequestVerifyCode = "SELECT code FROM auth_codes WHERE user_id = ?;";
-        //var sqlRequestVerifyCode = "SELECT code FROM auth_codes WHERE created = (SELECT max(created) FROM auth_codes);";
+        //var sqlRequestVerifyCode = "SELECT code FROM auth_codes WHERE user_id = ?;";
+        var sqlRequestVerifyCode = "SELECT code FROM auth_codes WHERE created = (SELECT max(created) FROM auth_codes);";
 
         try (
                 var conn = DriverManager.getConnection(
@@ -54,8 +54,8 @@ public class DataHelper {
                 );
 
         ) {
-            return runner.query(conn, sqlRequestVerifyCode, user.getId(), new ScalarHandler<>());
-            //return runner.query(conn, sqlRequestVerifyCode, new ScalarHandler<>());
+            //return runner.query(conn, sqlRequestVerifyCode, user.getId(), new ScalarHandler<>());
+            return runner.query(conn, sqlRequestVerifyCode, new ScalarHandler<>());
         }
     }
 
