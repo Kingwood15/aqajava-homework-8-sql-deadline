@@ -28,28 +28,6 @@ public class DashboardPage {
         return Integer.parseInt(value);
     }
 
-    /*
-    public int getIdAccountBalance(DataHelper.Card selectCard) {
-        String text = "0";
-        for (SelenideElement searchCard : cardLine) {
-            if (searchCard.getAttribute(searchAttribute).equals(selectCard.getId())) {
-                text = searchCard.text();
-            }
-        }
-        return extractBalance(text);
-    }
-
-    public TransferPage replenishCard(DataHelper.Card cardTo) {
-        for (SelenideElement searchCard : cardLine) {
-            if (searchCard.getAttribute(searchAttribute).equals(cardTo.getId())) {
-                searchCard.$(" [" + searchAttribute + "]").click();
-                break;
-            }
-        }
-        return new TransferPage();
-    }
-    */
-
     /*public int getIdAccountBalance(DataHelper.Card selectCard) {
         String text = cardLine.find(Condition.attribute(searchAttribute, selectCard.getId())).getText();
         return extractBalance(text);

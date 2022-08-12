@@ -1,8 +1,6 @@
 package ru.netology.domain.test;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.netology.domain.data.DataHelper;
 import ru.netology.domain.page.LoginPage;
 
@@ -11,14 +9,19 @@ import static com.codeborne.selenide.Selenide.open;
 public class AuthDbInteractinDbUtilsTest {
 
     @BeforeAll
-    public static void setUpForSUT() {
-        //DataHelper.clearSUTData();
+    public static void resetSUT() {
+        DataHelper.clearSUTData();
+        DataHelper.resetSUTData();
     }
 
     @BeforeEach
     void shouldStart() {
-        //DataHelper.requestCreateUser();
         open("http://localhost:9999/");
+    }
+
+    @AfterAll
+    public static void cleanDatabase() {
+        DataHelper.clearSUTData();
     }
 
     @Test
@@ -34,6 +37,16 @@ public class AuthDbInteractinDbUtilsTest {
     }
 
     @Test
+    void shouldValidAuthForAddNewFakerAccountTest() {
+
+        var loginPage = new LoginPage();
+        var authIntoFaker = DataHelper.CreateUser();
+        var verificationPage = loginPage.validLogin(authIntoFaker);
+        var verificationCode = DataHelper.getVerificationCodeFor(authIntoFaker);
+        verificationPage.validVerify(verificationCode);
+    }
+
+    @Test
     void shouldCheckThreeTimesInvalidPassInputForVasyaTest() {
         String vasyaLogin = "vasya";
         String vasyaPass = "qwerty123";
@@ -42,8 +55,6 @@ public class AuthDbInteractinDbUtilsTest {
         String invalidPass3 = DataHelper.getRandPass();
 
         var loginPage = new LoginPage();
-        var authInfoForVasya = DataHelper.getAuthInfo(vasyaLogin);
-        System.out.println("authInfo: " + authInfoForVasya);
 
         loginPage.invalidLogin(vasyaLogin, invalidPass1);
         loginPage.invalidLogin(vasyaLogin, invalidPass2);

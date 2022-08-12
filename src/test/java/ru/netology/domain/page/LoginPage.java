@@ -6,8 +6,6 @@ import org.openqa.selenium.Keys;
 import ru.netology.domain.data.DataHelper;
 import ru.netology.mode.User;
 
-import java.time.Duration;
-
 import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage {

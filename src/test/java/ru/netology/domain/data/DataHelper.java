@@ -4,7 +4,6 @@ import com.github.javafaker.Faker;
 import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import ru.netology.mode.User;
 
@@ -12,14 +11,16 @@ import java.sql.DriverManager;
 
 public class DataHelper {
 
-    private static final String passEncrypted = "$2a$10$CNrT4S.Oo27u9x/iujHEvuqwsMTeYAn7xa5H0qAq/dhe1P1Yttr7m";
+    private static final String vasyaPassEncrypted = "$2a$10$CNrT4S.Oo27u9x/iujHEvuqwsMTeYAn7xa5H0qAq/dhe1P1Yttr7m";
+    private static final String petyaPassEncrypted = "$2a$10$QqnfLHmNwAKFTpaesao90ud169TVhznCueMzmObXFgkoZXQIPCcSe";
+    private static final String vasyaCardNumber1 = "5559 0000 0000 0001";
+    private static final String vasyaCardNumber2 = "5559 0000 0000 0002";
     private static final String pass = "qwerty123";
 
     private DataHelper() {
     }
 
     public static User getAuthInfo() {
-        //return new AuthInfo("vasya", "qwerty123");
         return requestUser();
     }
 
@@ -35,7 +36,6 @@ public class DataHelper {
     }
 
     public static String getVerificationCodeFor(User authInfo) {
-        //return new VerificationCode("12345");
         return requestCode(authInfo);
     }
 
@@ -74,9 +74,38 @@ public class DataHelper {
     @SneakyThrows
     public static void clearSUTData() {
         var runner = new QueryRunner();
-        var sqlCheckUsers = "SELECT * FROM users WHERE login = 'petya' OR login = 'vasya';";
-        var sqlDeleteCards = "DELETE FROM cards WHERE user_id = ?;";
-        var sqlDeleteUsers = "DELETE FROM users WHERE id = ? OR id = ?;";
+        var sqlDeleteAllAuthCodes = "DELETE FROM auth_codes;";
+        var sqlDeleteAllCards = "DELETE FROM cards;";
+        var sqlDeleteAllUsers = "DELETE FROM users;";
+
+        try (
+                var conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/app", "app", "pass"
+                );
+        ) {
+            runner.update(conn, sqlDeleteAllAuthCodes);
+            runner.update(conn, sqlDeleteAllCards);
+            runner.update(conn, sqlDeleteAllUsers);
+        }
+    }
+
+    //сброс тестовых данных всех таблиц к исходным значениям
+    @SneakyThrows
+    public static void resetSUTData() {
+        var runner = new QueryRunner();
+        var sqlInsertUsers = "INSERT INTO users(id, login, password) VALUES (?, ?, ?);";
+        var sqlInsertCards = "INSERT INTO cards(id, user_id, number, balance_in_kopecks) VALUES (?, ?, ?, ?);";
+
+        String vasyaId = getId();
+        String vasyaLogin = "vasya";
+        String vasyaPass = vasyaPassEncrypted;
+        String vasyaCard1Id = getId();
+        String CardNumber1 = vasyaCardNumber1;
+        String vasyaCard2Id = getId();
+        String CardNumber2 = vasyaCardNumber2;
+        String petyaId = getId();
+        String petyaLogin = "petya";
+        String petyaPass = petyaPassEncrypted;
 
         try (
                 var conn = DriverManager.getConnection(
@@ -84,27 +113,22 @@ public class DataHelper {
                 );
 
         ) {
-            var allUsers = runner.query(conn,
-                    sqlCheckUsers, new BeanListHandler<>(User.class));
-            //Проверка наличия в базе заданных пользователей:
-            if (allUsers.size() > 0) {
-                runner.update(conn, sqlDeleteCards,
-                        //Передача id Васи, для удаления карт:
-                        allUsers.get(1).getId());
-                runner.update(conn, sqlDeleteUsers,
-                        //Передача id Пети, для удаления пользователя:
-                        allUsers.get(0).getId(),
-                        //Передача id Васи, для удаления пользователя:
-                        allUsers.get(1).getId());
-            }
+            runner.update(conn, sqlInsertUsers, vasyaId, vasyaLogin, vasyaPass);
+            runner.update(conn, sqlInsertUsers, petyaId, petyaLogin, petyaPass);
+
+            runner.update(conn, sqlInsertCards, vasyaCard1Id, vasyaId, CardNumber1, "1000000");
+            runner.update(conn, sqlInsertCards, vasyaCard2Id, vasyaId, CardNumber2, "1000000");
         }
     }
 
-    //создание пользователя
+    //создание Faker пользователя
     @SneakyThrows
-    public static void requestCreateUser() {
+    public static User CreateUser() {
         var runner = new QueryRunner();
         var sqlAddUser = "INSERT INTO users(id, login, password) VALUES (?, ?, ?);";
+        var sqlSelectUser = "SELECT * FROM users WHERE id = ?;";
+        String userId = getId();
+        String userLogin = getLogin();
 
         try (
                 var conn = DriverManager.getConnection(
@@ -113,21 +137,20 @@ public class DataHelper {
 
         ) {
             runner.update(conn, sqlAddUser,
-                    getId(),
-                    getLogin(),
+                    userId,
+                    userLogin,
                     //Пароль qwerty123:
-                    passEncrypted);
+                    vasyaPassEncrypted);
+            return runner.query(conn, sqlSelectUser, userId,  new BeanHandler<>(User.class));
         }
     }
 
     private static String getId() {
-        Faker faker = new Faker();
-        return faker.internet().uuid();
+        return new Faker().internet().uuid();
     }
 
     private static String getLogin() {
-        Faker faker = new Faker();
-        return faker.name().firstName();
+        return new Faker().name().firstName();
     }
 
     public static String getValidPass() {
