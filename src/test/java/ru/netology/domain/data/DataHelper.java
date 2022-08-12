@@ -23,6 +23,17 @@ public class DataHelper {
         return requestUser();
     }
 
+    @SneakyThrows
+    public static User getAuthInfo(String findUser) {
+        var runner = new QueryRunner();
+        var sqlRequestUser = "SELECT * FROM users WHERE login = ?;";
+
+        try (var conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/app", "app", "pass")) {
+            return runner.query(conn, sqlRequestUser, findUser, new BeanHandler<>(User.class));
+        }
+    }
+
     public static String getVerificationCodeFor(User authInfo) {
         //return new VerificationCode("12345");
         return requestCode(authInfo);
@@ -47,7 +58,7 @@ public class DataHelper {
         //ожидание создания кода верификации
         Thread.sleep(500);
         var runner = new QueryRunner();
-        var sqlRequestSortByTime = "SELECT code FROM auth_codes ORDER BY created DESC";
+        var sqlRequestSortByTime = "SELECT code FROM auth_codes WHERE user_id = ? ORDER BY created DESC";
 
         try (
                 var conn = DriverManager.getConnection(
@@ -55,7 +66,7 @@ public class DataHelper {
                 );
 
         ) {
-            return runner.query(conn, sqlRequestSortByTime, new ScalarHandler<>());
+            return runner.query(conn, sqlRequestSortByTime, user.getId(), new ScalarHandler<>());
         }
     }
 
@@ -121,5 +132,9 @@ public class DataHelper {
 
     public static String getValidPass() {
         return pass;
+    }
+
+    public static String getRandPass() {
+        return new Faker().internet().password();
     }
 }
