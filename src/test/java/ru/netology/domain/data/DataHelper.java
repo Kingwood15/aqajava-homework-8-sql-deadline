@@ -41,12 +41,13 @@ public class DataHelper {
         }
     }
 
-    //запрос кода верификации из БД (2 варианта, пока оба не помогают верифицироваться)
+    //запрос кода верификации из БД
     @SneakyThrows
     private static String requestCode(User user) {
+        //ожидание создания кода верификации
+        Thread.sleep(500);
         var runner = new QueryRunner();
-        //var sqlRequestVerifyCode = "SELECT code FROM auth_codes WHERE user_id = ?;";
-        var sqlRequestVerifyCode = "SELECT code FROM auth_codes WHERE created = (SELECT max(created) FROM auth_codes);";
+        var sqlRequestSortByTime = "SELECT code FROM auth_codes ORDER BY created DESC";
 
         try (
                 var conn = DriverManager.getConnection(
@@ -54,8 +55,7 @@ public class DataHelper {
                 );
 
         ) {
-            //return runner.query(conn, sqlRequestVerifyCode, user.getId(), new ScalarHandler<>());
-            return runner.query(conn, sqlRequestVerifyCode, new ScalarHandler<>());
+            return runner.query(conn, sqlRequestSortByTime, new ScalarHandler<>());
         }
     }
 
