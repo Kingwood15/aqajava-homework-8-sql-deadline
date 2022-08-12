@@ -12,12 +12,12 @@ public class AuthTest {
 
     @BeforeAll
     public static void setUpForSUT() {
-        DataHelper.clearSUTData();
+        //DataHelper.clearSUTData();
     }
 
     @BeforeEach
     void shouldStart() {
-        DataHelper.requestCreateUser();
+        //DataHelper.requestCreateUser();
         open("http://localhost:9999/");
     }
 

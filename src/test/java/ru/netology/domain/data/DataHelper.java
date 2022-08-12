@@ -32,11 +32,12 @@ public class DataHelper {
     @SneakyThrows
     private static User requestUser() {
         var runner = new QueryRunner();
-        var sqlRequestUser = "SELECT * FROM users;";
+        var sqlRequestUser = "SELECT * FROM users WHERE id = ?;";
+        String vasyaId = "891da85c-15ea-4fed-b1aa-cc41490cb18c";
 
         try (var conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/app", "app", "pass")) {
-            return runner.query(conn, sqlRequestUser, new BeanHandler<>(User.class));
+            return runner.query(conn, sqlRequestUser, vasyaId, new BeanHandler<>(User.class));
         }
     }
 
