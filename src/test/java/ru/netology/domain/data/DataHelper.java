@@ -5,7 +5,6 @@ import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
-import ru.netology.mode.User;
 
 import java.sql.DriverManager;
 
@@ -141,7 +140,7 @@ public class DataHelper {
                     userLogin,
                     //Пароль qwerty123:
                     vasyaPassEncrypted);
-            return runner.query(conn, sqlSelectUser, userId,  new BeanHandler<>(User.class));
+            return runner.query(conn, sqlSelectUser, userId, new BeanHandler<>(User.class));
         }
     }
 
