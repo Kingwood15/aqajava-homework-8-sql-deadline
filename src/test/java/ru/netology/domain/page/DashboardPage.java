@@ -14,8 +14,6 @@ public class DashboardPage {
     private ElementsCollection cardLine = $$("body .list__item div");
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
-    private final String searchAttribute = "data-test-id";
-    private final String searchButton = "[data-test-id='action-deposit']";
 
     public DashboardPage() {
         heading.shouldBe(Condition.visible);
@@ -27,14 +25,4 @@ public class DashboardPage {
         val value = text.substring(start + balanceStart.length(), finish);
         return Integer.parseInt(value);
     }
-
-    /*public int getIdAccountBalance(DataHelper.Card selectCard) {
-        String text = cardLine.find(Condition.attribute(searchAttribute, selectCard.getId())).getText();
-        return extractBalance(text);
-    }
-
-    public TransferPage replenishCard(DataHelper.Card selectTo) {
-        cardLine.findBy(Condition.attribute(searchAttribute, selectTo.getId())).find(searchButton).click();
-        return new TransferPage();
-    }*/
 }
