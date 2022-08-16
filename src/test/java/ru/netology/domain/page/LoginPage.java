@@ -35,12 +35,16 @@ public class LoginPage {
         passwordField.setValue(password);
         loginButton.click();
 
-        errorMessage.shouldBe(Condition.visible);
-        errorMessage.find("button").click();
+        errorNotification();
     }
 
     public void cleanInputField(SelenideElement field) {
         field.sendKeys(Keys.LEFT_CONTROL + "A");
         field.sendKeys(Keys.BACK_SPACE);
+    }
+
+    public void errorNotification() {
+        errorMessage.shouldBe(Condition.visible);
+        errorMessage.find("button").click();
     }
 }
