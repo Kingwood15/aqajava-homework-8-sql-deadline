@@ -35,7 +35,6 @@ public class AuthDbInteractinDbUtilsTest {
 
     @Test
     void shouldValidAuthForAddNewFakerAccountTest() {
-
         var loginPage = new LoginPage();
         var authIntoFaker = DataHelper.createUser();
         var verificationPage = loginPage.validLogin(authIntoFaker.getLogin(), authIntoFaker.getPassword());
