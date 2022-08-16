@@ -29,15 +29,18 @@ public class LoginPage {
     }
 
     public void invalidLogin(String login, String password) {
-        loginField.sendKeys(Keys.LEFT_CONTROL + "A");
-        loginField.sendKeys(Keys.BACK_SPACE);
+        cleanInputField(loginField);
         loginField.setValue(login);
-        passwordField.sendKeys(Keys.LEFT_CONTROL + "A");
-        passwordField.sendKeys(Keys.BACK_SPACE);
+        cleanInputField(passwordField);
         passwordField.setValue(password);
         loginButton.click();
 
         errorMessage.shouldBe(Condition.visible);
         errorMessage.find("button").click();
+    }
+
+    public void cleanInputField(SelenideElement field) {
+        field.sendKeys(Keys.LEFT_CONTROL + "A");
+        field.sendKeys(Keys.BACK_SPACE);
     }
 }
