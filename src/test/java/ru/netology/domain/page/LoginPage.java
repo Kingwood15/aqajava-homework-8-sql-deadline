@@ -3,8 +3,6 @@ package ru.netology.domain.page;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
-import ru.netology.domain.data.DataHelper;
-import ru.netology.domain.data.User;
 
 import static com.codeborne.selenide.Selenide.$;
 

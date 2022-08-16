@@ -26,12 +26,9 @@ public class AuthDbInteractinDbUtilsTest {
 
     @Test
     void shouldValidAuthForVasyaAccountTest() {
-        String vasyaLogin = "vasya";
-        String vasyaPass = "qwerty123";
-
         var loginPage = new LoginPage();
-        var authInfoForVasya = DataHelper.getAuthInfo(vasyaLogin);
-        var verificationPage = loginPage.validLogin(vasyaLogin, vasyaPass);
+        var authInfoForVasya = DataHelper.getAuthInfo();
+        var verificationPage = loginPage.validLogin(authInfoForVasya.getLogin(), authInfoForVasya.getPassword());
         var verificationCode = DataHelper.getVerificationCodeFor(authInfoForVasya);
         verificationPage.validVerify(verificationCode);
     }
@@ -48,17 +45,15 @@ public class AuthDbInteractinDbUtilsTest {
 
     @Test
     void shouldCheckThreeTimesInvalidPassInputForVasyaTest() {
-        String vasyaLogin = "vasya";
-        String vasyaPass = "qwerty123";
+        var authInfoForVasya = DataHelper.getAuthInfo();
         String invalidPass1 = DataHelper.getRandPass();
         String invalidPass2 = DataHelper.getRandPass();
         String invalidPass3 = DataHelper.getRandPass();
 
         var loginPage = new LoginPage();
-
-        loginPage.invalidLogin(vasyaLogin, invalidPass1);
-        loginPage.invalidLogin(vasyaLogin, invalidPass2);
-        loginPage.invalidLogin(vasyaLogin, invalidPass3);
-        loginPage.invalidLogin(vasyaLogin, vasyaPass);
+        loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass1);
+        loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass2);
+        loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass3);
+        loginPage.invalidLogin(authInfoForVasya.getLogin(), authInfoForVasya.getPassword());
     }
 }

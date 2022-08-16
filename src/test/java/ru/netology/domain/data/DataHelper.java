@@ -20,35 +20,11 @@ public class DataHelper {
     }
 
     public static User getAuthInfo() {
-        return requestUser();
-    }
-
-    @SneakyThrows
-    public static User getAuthInfo(String findUser) {
-        var runner = new QueryRunner();
-        var sqlRequestUser = "SELECT * FROM users WHERE login = ?;";
-
-        try (var conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/app", "app", "pass")) {
-            return runner.query(conn, sqlRequestUser, findUser, new BeanHandler<>(User.class));
-        }
+        return new User(getId(),"vasya", pass);
     }
 
     public static String getVerificationCodeFor(User authInfo) {
         return requestCode(authInfo);
-    }
-
-    //запрос пользователя из БД
-    @SneakyThrows
-    private static User requestUser() {
-        var runner = new QueryRunner();
-        var sqlRequestUser = "SELECT * FROM users WHERE login = ?;";
-        String vasyaId = "vasya";
-
-        try (var conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/app", "app", "pass")) {
-            return runner.query(conn, sqlRequestUser, vasyaId, new BeanHandler<>(User.class));
-        }
     }
 
     //запрос кода верификации из БД
@@ -150,10 +126,6 @@ public class DataHelper {
 
     private static String getLogin() {
         return new Faker().name().firstName();
-    }
-
-    public static String getValidPass() {
-        return pass;
     }
 
     public static String getRandPass() {
