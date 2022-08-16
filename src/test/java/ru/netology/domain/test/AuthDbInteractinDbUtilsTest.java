@@ -41,7 +41,7 @@ public class AuthDbInteractinDbUtilsTest {
 
         var loginPage = new LoginPage();
         var authIntoFaker = DataHelper.CreateUser();
-        var verificationPage = loginPage.validLogin(authIntoFaker);
+        var verificationPage = loginPage.validLogin(authIntoFaker.getLogin(), authIntoFaker.getPassword());
         var verificationCode = DataHelper.getVerificationCodeFor(authIntoFaker);
         verificationPage.validVerify(verificationCode);
     }

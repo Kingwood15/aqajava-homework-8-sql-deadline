@@ -21,14 +21,6 @@ public class LoginPage {
         loginButton.shouldBe(Condition.visible);
     }
 
-    public VerificationPage validLogin(User info) {
-        loginField.setValue(info.getLogin());
-        //passwordField.setValue(info.getPassword());
-        passwordField.setValue(DataHelper.getValidPass());
-        loginButton.click();
-        return new VerificationPage();
-    }
-
     public VerificationPage validLogin(String login, String password) {
         loginField.setValue(login);
         passwordField.setValue(password);
