@@ -28,7 +28,7 @@ public class LoginPage {
         return new VerificationPage();
     }
 
-    public LoginPage invalidLogin(String login, String password) {
+    public void invalidLogin(String login, String password) {
         loginField.sendKeys(Keys.LEFT_CONTROL + "A");
         loginField.sendKeys(Keys.BACK_SPACE);
         loginField.setValue(login);
@@ -39,6 +39,5 @@ public class LoginPage {
 
         errorMessage.shouldBe(Condition.visible);
         errorMessage.find("button").click();
-        return new LoginPage();
     }
 }
