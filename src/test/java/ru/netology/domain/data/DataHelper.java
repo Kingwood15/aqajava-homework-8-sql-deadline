@@ -122,7 +122,7 @@ public class DataHelper {
 
     //создание Faker пользователя
     @SneakyThrows
-    public static User CreateUser() {
+    public static User createUser() {
         var runner = new QueryRunner();
         var sqlAddUser = "INSERT INTO users(id, login, password) VALUES (?, ?, ?);";
         var sqlSelectUser = "SELECT * FROM users WHERE id = ?;";

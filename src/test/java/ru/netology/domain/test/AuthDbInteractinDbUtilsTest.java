@@ -40,7 +40,7 @@ public class AuthDbInteractinDbUtilsTest {
     void shouldValidAuthForAddNewFakerAccountTest() {
 
         var loginPage = new LoginPage();
-        var authIntoFaker = DataHelper.CreateUser();
+        var authIntoFaker = DataHelper.createUser();
         var verificationPage = loginPage.validLogin(authIntoFaker.getLogin(), authIntoFaker.getPassword());
         var verificationCode = DataHelper.getVerificationCodeFor(authIntoFaker);
         verificationPage.validVerify(verificationCode);
