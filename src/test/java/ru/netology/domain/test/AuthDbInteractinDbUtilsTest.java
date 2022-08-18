@@ -50,19 +50,19 @@ public class AuthDbInteractinDbUtilsTest {
         String invalidPass3 = DataHelper.getRandPass();
 
         var loginPage = new LoginPage();
-        loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass1);
+        loginPage.enterLogin(authInfoForVasya.getLogin(), invalidPass1);
         loginPage.errorNotification();
 
         loginPage.cleanInputField();
-        loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass2);
+        loginPage.enterLogin(authInfoForVasya.getLogin(), invalidPass2);
         loginPage.errorNotification();
 
         loginPage.cleanInputField();
-        loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass3);
+        loginPage.enterLogin(authInfoForVasya.getLogin(), invalidPass3);
         loginPage.errorNotification();
 
         loginPage.cleanInputField();
-        loginPage.invalidLogin(authInfoForVasya.getLogin(), authInfoForVasya.getPassword());
+        loginPage.enterLogin(authInfoForVasya.getLogin(), authInfoForVasya.getPassword());
         loginPage.errorNotification();
     }
 }

@@ -20,13 +20,11 @@ public class LoginPage {
     }
 
     public VerificationPage validLogin(String login, String password) {
-        loginField.setValue(login);
-        passwordField.setValue(password);
-        loginButton.click();
+        enterLogin(login, password);
         return new VerificationPage();
     }
 
-    public void invalidLogin(String login, String password) {
+    public void enterLogin(String login, String password) {
         loginField.setValue(login);
         passwordField.setValue(password);
         loginButton.click();
