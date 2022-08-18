@@ -32,8 +32,6 @@ public class LoginPage {
         cleanInputField(passwordField);
         passwordField.setValue(password);
         loginButton.click();
-
-        errorNotification();
     }
 
     public void cleanInputField(SelenideElement field) {

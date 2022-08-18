@@ -51,8 +51,12 @@ public class AuthDbInteractinDbUtilsTest {
 
         var loginPage = new LoginPage();
         loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass1);
+        loginPage.errorNotification();
         loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass2);
+        loginPage.errorNotification();
         loginPage.invalidLogin(authInfoForVasya.getLogin(), invalidPass3);
+        loginPage.errorNotification();
         loginPage.invalidLogin(authInfoForVasya.getLogin(), authInfoForVasya.getPassword());
+        loginPage.errorNotification();
     }
 }
